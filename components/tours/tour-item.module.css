@@ -1,0 +1,28 @@
+.tour {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: black;
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 400px;
+  padding-bottom: 20px;
+}
+.tour img {
+  width: 100%;
+  object-fit: cover;
+}
+.cardBody {
+  width: 100%;
+  padding: 0 1rem;
+  text-align: center;
+}
+.cardBody h2 {
+  margin: 0.5rem 0;
+}
+.date,
+.address {
+  display: flex;
+  align-items: center;
+}

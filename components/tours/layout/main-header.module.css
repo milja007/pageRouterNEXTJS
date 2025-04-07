@@ -1,0 +1,15 @@
+.header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 20px;
+  background-color: orangered;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.logo a:hover {
+  padding: 5px;
+  background-color: white;
+  color: orangered;
+  border-radius: 10px;
+}

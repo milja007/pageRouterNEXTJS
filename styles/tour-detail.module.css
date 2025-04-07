@@ -1,0 +1,13 @@
+.notFound {
+  text-align: center;
+  margin-top: 5rem;
+  font-size: 40px;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+}
