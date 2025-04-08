@@ -3,7 +3,7 @@ import MainHeader from "./main-header";
 const LayoutPage = ({ children }) => {
   return (
     <div>
-      <MainHeader />;{children}
+      <MainHeader />
       <main>{children}</main>
     </div>
   );

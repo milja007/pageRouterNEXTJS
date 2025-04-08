@@ -1,8 +1,7 @@
 import TourItem from "./tour-item";
 import styles from "./tour-list.module.css";
 
-const TourList = (props) => {
-  const { tours } = props;
+const TourList = ({ tours }) => {
   return (
     <ul className={styles.list}>
       {tours.map((tour) => (

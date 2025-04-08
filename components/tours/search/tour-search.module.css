@@ -23,10 +23,12 @@
   gap: 1rem;
   align-items: center;
   justify-content: space-between;
+  color: black;
 }
 
 .selectWrapper label {
   font-weight: bold;
+  color: white;
 }
 
 .selectWrapper select {
@@ -36,6 +38,10 @@
   border-radius: 6px;
   width: 70%;
   padding: 0.25rem;
+}
+
+.selectWrapper select option {
+  color: black;
 }
 
 .form button {
