@@ -1,17 +1,11 @@
-import React, { use } from "react";
-import { useRouter } from "next/router";
-import { getTourById } from "@/fake-data";
+import { getTourById, getAllTours, getFeaturedTours } from "@/helpers/api";
 import style from "@/styles/tour-detail.module.css";
 import TourHeader from "@/components/tours/tour-detail/tour-header";
 import TourContent from "@/components/tours/tour-detail/tour-content";
 
 import TourDescription from "@/components/tours/tour-detail/tour-description";
 
-const TourDetailPage = () => {
-  const router = useRouter();
-  const tourId = router.query.tourId;
-  const tour = getTourById(tourId);
-
+const TourDetailPage = ({ tour }) => {
   if (!tour) {
     return <h3 className={style.notFound}>Tour N0T Found</h3>;
   }
@@ -26,10 +20,28 @@ const TourDetailPage = () => {
   );
 };
 
+export const getStaticProps = async (context) => {
+  const tourId = context.params.tourId;
+  const tour = await getTourById(tourId);
+  //tu malo promjenjeno
+  return {
+    props: {
+      tour: tour,
+    },
+    revalidate: 60,
+  };
+};
+export const getStaticPaths = async () => {
+  const tours = await getAllTours();
+  const paths = tours.map((tour) => ({ params: { tourId: tour.id } }));
+  return {
+    paths: paths,
+    fallback: false,
+  };
+};
 export default TourDetailPage;
 
-{
-  /* <li className={styles.tour}>
+/* <li className={styles.tour}>
 <img src={"/" + image} alt={title} />
 <div className={styles.cardBody}>
   <div className={styles.cardHeader}>
@@ -46,4 +58,3 @@ export default TourDetailPage;
   </div>
 </div>
 </li> */
-}

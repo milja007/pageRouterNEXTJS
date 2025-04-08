@@ -1,13 +1,20 @@
 import TourList from "@/components/tours/tour-list";
-import { getFeaturedTours } from "@/fake-data";
+import { getFeaturedTours } from "@/helpers/api";
 
-const HomePage = () => {
-  const featuredTours = getFeaturedTours();
+const HomePage = (props) => {
   return (
     <div>
-      <TourList tours={featuredTours} />
+      <TourList tours={props.featuredTours} />
     </div>
   );
 };
 
+export const getStaticProps = async () => {
+  const featuredTours = await getFeaturedTours();
+  return {
+    props: {
+      featuredTours: featuredTours,
+    },
+  };
+};
 export default HomePage;
