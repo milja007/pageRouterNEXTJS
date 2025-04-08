@@ -1,0 +1,45 @@
+.form {
+  margin: 2rem auto;
+  background-color: black;
+  padding: 1rem;
+  border-radius: 6px;
+  max-width: 30rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mainWrapper {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.selectWrapper {
+  flex: 1;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.selectWrapper label {
+  font-weight: bold;
+}
+
+.selectWrapper select {
+  font: inherit;
+  background-color: white;
+  color: black;
+  border-radius: 6px;
+  width: 70%;
+  padding: 0.25rem;
+}
+
+.form button {
+  background-color: black;
+  cursor: pointer;
+  font-size: 20px;
+}
