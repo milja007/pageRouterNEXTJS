@@ -1,60 +1,41 @@
-import { useRouter } from "next/router";
-import { getFilteredTours } from "@/fake-data";
+import { getFilteredTours } from "@/helpers/api";
 import Button from "@/components/tours/button/button";
 import TourList from "@/components/tours/tour-list";
 
-const FilteredTourPage = () => {
-  const router = useRouter();
-  const filteredDate = router.query.slug;
-  // console.log(filteredData);
-  if (!filteredDate) {
-    return <h3 className="center-tag">Loading Tours...</h3>;
-  }
-  const selctedYear = filteredDate[0];
-  const selectedMonth = filteredDate[1];
-
-  const numYear = +selctedYear;
-  const numMonth = +selectedMonth;
-
-  if (
-    isNaN(numYear) ||
-    isNaN(numMonth) ||
-    numYear > 2028 ||
-    numYear < 2021 ||
-    numMonth < 1 ||
-    numMonth > 12
-  )
+const FilteredTourPage = (props) => {
+  if (props.hasError) {
     return (
-      <>
+      <div className="center-tag">
         <h3 className="center-tag">
-          You have entered invalid values . Please check the parameters.
+          You have entered invalid values. Please check the parameters.
         </h3>
         <div className="center-tag">
           <Button link="/tours">Return All Tours</Button>
         </div>
-      </>
+      </div>
     );
-  const filteredTours = getFilteredTours({
-    year: numYear,
-    month: numMonth,
-  });
+  }
+
+  const filteredTours = props.tours;
+
   if (!filteredTours || filteredTours.length === 0) {
     return (
-      <>
+      <div className="center-tag">
         <h3 className="center-tag">
-          There is no tours on the dates you selected
+          There are no tours on the dates you selected.
         </h3>
         <div className="center-tag">
           <Button link="/tours">Return All Tours</Button>
         </div>
-      </>
+      </div>
     );
   }
-  //january is 0 so we need to subtract 1 from the month
-  const date = new Date(numYear, numMonth - 1);
+
+  const { year, month } = props.date;
+  const date = new Date(year, month - 1);
   const newDate = new Date(date).toLocaleDateString("en-US", {
-    year: "numeric",
     month: "long",
+    year: "numeric",
   });
 
   return (
@@ -63,6 +44,59 @@ const FilteredTourPage = () => {
       <TourList tours={filteredTours} />
     </div>
   );
+};
+
+export const getServerSideProps = async (context) => {
+  const { params } = context;
+  const filteredDate = params?.slug;
+
+  if (!filteredDate || filteredDate.length !== 2) {
+    return {
+      props: { hasError: true },
+    };
+  }
+
+  const selectedYear = filteredDate[0];
+  const selectedMonth = filteredDate[1];
+
+  const numYear = +selectedYear;
+  const numMonth = +selectedMonth;
+
+  if (
+    isNaN(numYear) ||
+    isNaN(numMonth) ||
+    numYear > 2030 ||
+    numYear < 2020 ||
+    numMonth < 1 ||
+    numMonth > 12
+  ) {
+    return {
+      props: { hasError: true },
+    };
+  }
+
+  try {
+    const filteredTours = await getFilteredTours({
+      year: numYear,
+      month: numMonth,
+    });
+    return {
+      props: {
+        tours: filteredTours,
+        date: {
+          year: numYear,
+          month: numMonth,
+        },
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching filtered tours:", error);
+    return {
+      props: {
+        hasError: true,
+      },
+    };
+  }
 };
 
 export default FilteredTourPage;

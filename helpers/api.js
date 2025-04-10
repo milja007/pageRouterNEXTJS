@@ -3,14 +3,15 @@ export async function getAllTours() {
     `https://nextjs-pagerouter-default-rtdb.europe-west1.firebasedatabase.app/tours.json`
   );
   const data = await response.json();
+  console.log("Raw data from Firebase:", data); // Add this line
   const tours = [];
   for (const key in data) {
     tours.push({
       id: key,
       ...data[key],
     });
-    return tours;
   }
+  return tours;
 }
 
 export async function getFeaturedTours() {
@@ -23,9 +24,10 @@ export async function getFilteredTours(dateFilter) {
   const { year, month } = dateFilter;
   let filteredTours = allTours.filter((tour) => {
     const tourDate = new Date(tour.date);
-    return tourDate.getFullYear() === year && tourDate.getMonth() === month - 1;
+    const tourYear = tourDate.getFullYear();
+    const tourMonth = tourDate.getMonth();
+    return tourYear === year && tourMonth === month - 1;
   });
-
   return filteredTours;
 }
 

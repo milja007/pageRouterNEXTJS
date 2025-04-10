@@ -15,6 +15,7 @@ export const getStaticProps = async () => {
     props: {
       featuredTours: featuredTours,
     },
+    revalidate: 3600,
   };
 };
 export default HomePage;

@@ -1,4 +1,4 @@
-import { getTourById, getAllTours, getFeaturedTours } from "@/helpers/api";
+import { getTourById, getFeaturedTours, getAllTours } from "@/helpers/api";
 import style from "@/styles/tour-detail.module.css";
 import TourHeader from "@/components/tours/tour-detail/tour-header";
 import TourContent from "@/components/tours/tour-detail/tour-content";
@@ -7,17 +7,19 @@ import TourDescription from "@/components/tours/tour-detail/tour-description";
 
 const TourDetailPage = ({ tour }) => {
   if (!tour) {
-    return <h3 className={style.notFound}>Tour N0T Found</h3>;
+    return <h3 className={style.notFound}>Loading...</h3>;
   }
-  return (
-    <div className={style.wrapper}>
-      <TourHeader title={tour.title} />
-      <TourContent tour={tour} />
-      <TourDescription>
-        <p>{tour.description}</p>
-      </TourDescription>
-    </div>
-  );
+  if (tour) {
+    return (
+      <div className={style.wrapper}>
+        <TourHeader title={tour.title} />
+        <TourContent tour={tour} />
+        <TourDescription>
+          <p>{tour.description}</p>
+        </TourDescription>
+      </div>
+    );
+  }
 };
 
 export const getStaticProps = async (context) => {
@@ -32,11 +34,11 @@ export const getStaticProps = async (context) => {
   };
 };
 export const getStaticPaths = async () => {
-  const tours = await getAllTours();
+  const tours = await getFeaturedTours();
   const paths = tours.map((tour) => ({ params: { tourId: tour.id } }));
   return {
     paths: paths,
-    fallback: false,
+    fallback: true,
   };
 };
 export default TourDetailPage;
